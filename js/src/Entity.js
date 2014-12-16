@@ -49,7 +49,10 @@ Entity.prototype.update = function()
 Object.defineProperty(Entity.prototype, 'position', {
     
     get: function() {
-        return this.body.position;
+        return {
+            x : this.body.position[0],
+            y : this.body.position[1]
+        };
     },
     
     set: function(value) {
