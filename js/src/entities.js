@@ -16,6 +16,6 @@ EntityManager.addTemplate('cone', {
 EntityManager.addTemplate('trolley', {
     sprite : { image : 'img/trolley.png' },
     shape : {
-        width: 14, height: 22
+        width: 18, height: 26
     }
 });
