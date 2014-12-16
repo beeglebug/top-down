@@ -10,9 +10,11 @@ var man = EntityManager.create({
     },
     shape : {
         type : p2.Shape.CIRCLE,
-        radius : 8
+        radius : 7
     }
 }, 200, 50);
+
+camera.follow(man);
 
 EntityManager.createFromTemplate('pallet', {}, 200, 200);
 EntityManager.createFromTemplate('trolley', {}, 100, 100);

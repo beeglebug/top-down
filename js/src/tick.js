@@ -33,6 +33,8 @@ function tick() {
     // sync visuals
     EntityManager.update();
     
+    camera.update();
+
     // render
     renderer.render(stage);
 }

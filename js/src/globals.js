@@ -10,21 +10,22 @@ var world = new p2.World();
 // config
 world.applyGravity = false;
 
+var root = new PIXI.DisplayObjectContainer();
+
 var layers = {
     shadows : new PIXI.DisplayObjectContainer(),
     other : new PIXI.DisplayObjectContainer(),
     debug : new PIXI.DisplayObjectContainer()
-}
-
-stage.addChild(layers.shadows);
-stage.addChild(layers.other);
-stage.addChild(layers.debug);
+};
 
 layers.shadows.alpha = 0.1;
 
-var root = new PIXI.DisplayObjectContainer();
-stage.addChild(root);
+root.addChild(layers.shadows);
+root.addChild(layers.other);
+root.addChild(layers.debug);
 
+var camera = new Camera(root);
+stage.addChild(camera.container);
 
 var DEBUG = 0,
     BASE_SCALE = 2,
