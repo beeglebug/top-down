@@ -28,7 +28,7 @@ var EntityManager = {
             width : 10 * BASE_SCALE,
             height : 10 * BASE_SCALE,
             collisionGroup : COLLISION_OBJECTS,
-            collisionMask : COLLISION_OBJECTS | COLLISION_WALLS | COLLISION_MOBS | COLLISION_WALLS
+            collisionMask : COLLISION_ALL
         }
 
     },

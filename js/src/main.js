@@ -10,7 +10,8 @@ var man = EntityManager.create({
     },
     shape : {
         type : p2.Shape.CIRCLE,
-        radius : 7
+        radius : 7,
+        collisionGroup : COLLISION_MOBS
     }
 }, 200, 50);
 
@@ -26,12 +27,14 @@ var wall2 = EntityManager.createFromTemplate('wall', {}, 240, 0);
 var wall3 = EntityManager.createFromTemplate('wall', {}, 200, 35);
 
 var door = EntityManager.create({
-    shape : {
-        width : 30,
-        height: 4
-    },
     sprite : {
         image :'img/door.png'
+    },
+    shape : {
+        width : 30,
+        height: 4,
+        collisionGroup : COLLISION_DOORS,
+        collisionMask : COLLISION_ALL &~ COLLISION_WALLS
     }
 }, 200, 0);
 
@@ -44,14 +47,5 @@ var hinge = new p2.RevoluteConstraint(door.body, groundBody, {
 hinge.setLimits(-PI2, PI2);
 
 world.addConstraint(hinge);
-
-door.shape.collisionGroup = COLLISION_DOORS;
-man.shape.collisionGroup = COLLISION_MOBS;
-
-door.shape.collisionMask = COLLISION_MOBS | COLLISION_OBJECTS;
-man.shape.collisionMask = COLLISION_WALLS | COLLISION_DOORS | COLLISION_OBJECTS;
-
-
-
 
 requestAnimFrame( tick );
