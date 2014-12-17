@@ -16,18 +16,42 @@ var man = EntityManager.create({
 
 camera.follow(man);
 
-EntityManager.createFromTemplate('pallet', {}, 200, 200);
+var test = EntityManager.createFromTemplate('pallet', {}, 200, 200);
 EntityManager.createFromTemplate('trolley', {}, 100, 100);
 EntityManager.createFromTemplate('cone', {}, 100, 150);
 EntityManager.createFromTemplate('cone', {}, 100, 170);
 
-var wall = EntityManager.create({
-    sprite : { image : 'img/wall.png' },
-    body : { mass: 0 },
+var wall = EntityManager.createFromTemplate('wall', {}, 160, 0);
+var wall2 = EntityManager.createFromTemplate('wall', {}, 240, 0);
+var wall3 = EntityManager.createFromTemplate('wall', {}, 200, 35);
+
+var door = EntityManager.create({
     shape : {
-        width: 6,
-        height: 50
+        width : 30,
+        height: 4
+    },
+    sprite : {
+        image :'img/door.png'
     }
-}, 30, 80);
+}, 200, 0);
+
+var groundBody = new p2.Body();
+world.addBody(groundBody);
+
+var hinge = new p2.RevoluteConstraint(door.body, groundBody, {
+    worldPivot: [185, 0]
+});
+hinge.setLimits(-PI2, PI2);
+
+world.addConstraint(hinge);
+
+door.shape.collisionGroup = COLLISION_DOORS;
+man.shape.collisionGroup = COLLISION_MOBS;
+
+door.shape.collisionMask = COLLISION_MOBS | COLLISION_OBJECTS;
+man.shape.collisionMask = COLLISION_WALLS | COLLISION_DOORS | COLLISION_OBJECTS;
+
+
+
 
 requestAnimFrame( tick );

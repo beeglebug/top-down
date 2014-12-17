@@ -10,14 +10,24 @@ var Entity = function(options)
  
     // @todo determine shape size from sprite (callback when loaded)
     
+    var shape;
+
     if(options.shape.type == p2.Shape.RECTANGLE) {
         
-        this.body.addShape( new p2.Rectangle(options.shape.width, options.shape.height) );
+        shape = new p2.Rectangle(options.shape.width, options.shape.height);
+
+        this.body.addShape( shape );
         
     } else if(options.shape.type == p2.Shape.CIRCLE) {
         
-        this.body.addShape( new p2.Circle(options.shape.radius) );
+        shape = new p2.Circle(options.shape.radius);
+
+        this.body.addShape( shape );
     }
+
+    shape.collisionGroup = options.shape.collisionGroup;
+    shape.collisionMask = options.shape.collisionMask;
+
 };
 
 
@@ -59,4 +69,12 @@ Object.defineProperty(Entity.prototype, 'position', {
         this.body.position = value;
     }
     
+});
+
+Object.defineProperty(Entity.prototype, 'shape', {
+
+    get: function() {
+        return this.body.shapes[0];
+    }
+
 });

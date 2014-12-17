@@ -19,3 +19,13 @@ EntityManager.addTemplate('trolley', {
         width: 18, height: 26
     }
 });
+
+EntityManager.addTemplate('wall', {
+    sprite : { image : 'img/wall.png' },
+    body : { mass: 0 },
+    shape : {
+        width: 50,
+        height: 8,
+        collisionGroup : COLLISION_WALLS
+    }
+});
