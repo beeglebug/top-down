@@ -56,8 +56,8 @@ var EntityManager = {
     {        
         var entity = new Entity(options);
         
-        if(DEBUG) {
-            this.addDebugShape(entity);
+        if(Debug.enabled) {
+            Debug.addDebugShape(entity);
         }
         
         if(options.shadow) {
@@ -66,7 +66,7 @@ var EntityManager = {
         
         this.entities.push(entity);
         
-        this.addToWorld(entity, x, y);
+        this.add(entity, x, y);
         
         return entity;
     },
@@ -91,16 +91,19 @@ var EntityManager = {
     /**
      * add an entity to the world
      */
-    addToWorld : function(entity, x, y)
+    add : function(entity, x, y)
     {
-        layers.shadows.addChild(entity.shadow);
         layers.other.addChild(entity.sprite);
         
+        if(entity.shadow) {
+            layers.shadows.addChild(entity.shadow);
+        }
+
         if(entity.debug) {
             layers.debug.addChild(entity.debug);
         }
         
-        entity.position = [x, y];
+        entity.position = [ x || 0, y || 0 ];
         
         world.addBody(entity.body);
     },
@@ -115,28 +118,6 @@ var EntityManager = {
         shadow.scale.set(entity.sprite.scale.x, entity.sprite.scale.y);
     
         entity.shadow = shadow;
-    },
-    
-    addDebugShape : function(entity)
-    {
-        var shape = entity.body.shapes[0];
-        
-        var debug = new PIXI.Graphics();
-        debug.lineStyle (1, 0xFF0000);
-        
-        if(shape.type == p2.Shape.CIRCLE) {
-            
-            debug.drawCircle(0, 0, shape.radius);
-            
-        } else if(shape.type == p2.Shape.RECTANGLE) {
-            
-            debug.drawRect(0, 0, shape.width, shape.height);
-            
-            debug.pivot.set(shape.width/2, shape.height/2);
-            
-        }
-        
-        entity.debug = debug;
     }
     
 };

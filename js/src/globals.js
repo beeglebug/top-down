@@ -27,7 +27,9 @@ root.addChild(layers.debug);
 var camera = new Camera(root);
 stage.addChild(camera.container);
 
-var DEBUG = 0,
+var DEBUG_ENABLED = 1,
     BASE_SCALE = 2,
     SHADOW_OFFSET = new PIXI.Point(1 * BASE_SCALE, 1 * BASE_SCALE)
 ;
+
+if(DEBUG_ENABLED) { Debug.enable(); }
