@@ -38,12 +38,17 @@ grid.on('mousedown', 'img', function(e) {
     var x = e.originalEvent.clientX;
     var y = e.originalEvent.clientY;
 
+    dragOffset.set(
+        (e.target.width / 2) * scale,
+        (e.target.height / 2) * scale
+    );
+
     var img = e.target.src;
     var sprite = new PIXI.Sprite.fromImage(img);
 
     sprite.position.set(x,y);
 
-    sprite.interactive= true;
+    sprite.interactive = true;
     sprite.mousedown = function(e){
         dragging = sprite;
         var pos = e.getLocalPosition(sprite);
@@ -60,7 +65,15 @@ grid.on('mousedown', 'img', function(e) {
 });
 
 
+var selected = null;
 
+
+function select(sprite)
+{
+
+}
+
+PIXI.scaleModes.DEFAULT = PIXI.scaleModes.NEAREST;
 var stage = new PIXI.Stage(0xFFFFFF);
 var width = window.innerWidth;
 var height = window.innerHeight;

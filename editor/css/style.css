@@ -6,8 +6,52 @@
     margin: 20px;
 }
 
+.panel {
+    overflow: auto;
+    font-size: 12px;
+}
+
+.panel-heading {
+    font-size: 14px;
+}
+
 .panel-browser .image-grid img {
     border: 1px solid #CCC;
     padding: 1px;
     margin: 2px;
+}
+
+.panel-properties .property-group {
+    border-bottom: 1px solid #ccc;
+    overflow: auto;
+}
+
+.panel-properties .property-group:last-child {
+    border-bottom: none;
+}
+
+.panel-properties .property-group h2 {
+    font-size: 12px;
+    margin: 0;
+    width: 25%;
+    float: left;
+}
+
+.panel-properties .property {
+    width: 25%;
+    float:left;
+}
+
+.panel-properties .property label {
+    font-weight: normal;
+    padding-right: 5px;
+    margin-bottom: 0;
+    text-align: right;
+    width: 20%;
+}
+
+.panel-properties .property input {
+    width: 75%;
+    line-height: 10px;
+    border: 1px solid #ccc;
 }
