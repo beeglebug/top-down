@@ -1,0 +1,13 @@
+.panels {
+    position: absolute;
+    right: 0;
+    top: 0;
+    width: 300px;
+    margin: 20px;
+}
+
+.panel-browser .image-grid img {
+    border: 1px solid #CCC;
+    padding: 1px;
+    margin: 2px;
+}
