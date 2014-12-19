@@ -19,12 +19,14 @@ var selected = null;
 var dragging = null;
 var dragOffset = new PIXI.Point();;
 var scale = 3;
+var spriteID = 0;
 
 canvas.scale.set(scale);
 
 // cache a load of elements
 var elements = {
     grid : $('.panel-browser .image-grid'),
+    graph : $('.scene-graph'),
     position : {
         x : $('[data-property="position-x"]'),
         y : $('[data-property="position-y"]')
@@ -36,28 +38,20 @@ var elements = {
     }
 };
 
-var tree = [
-    'Simple root node',
-    {
-        'text' : 'Root node 2',
-        'children' : [
-            { 'text' : 'Child 1' },
-            'Child 2'
-        ]
-    }
-];
-
-$('.scene-graph').jstree({
+var $tree = elements.graph.jstree({
     core : {
-        data : tree,
+        data : [],
         check_callback : true
     },
-    plugins : ['wholerow', 'dnd'],
-    types : {
-        default : {
-            icon : 'glyphicon glyphicon-picture'
-        }
-    }
+    plugins : ['wholerow', 'dnd']
+});
+
+var tree = $tree.jstree(true);
+
+$tree.on('activate_node.jstree', function(ev, data) {
+
+    select(data.node.data.sprite);
+
 });
 
 /**
@@ -77,36 +71,40 @@ data.images.forEach(function(image) {
  */
 elements.grid.on('mousedown', 'img', function(e) {
 
-    var x = e.originalEvent.clientX;
-    var y = e.originalEvent.clientY;
+    var x = e.originalEvent.clientX / scale;
+    var y = e.originalEvent.clientY / scale;
 
-    dragOffset.set(
-        (e.target.width / 2) * scale,
-        (e.target.height / 2) * scale
-    );
+    dragOffset.set(0,0);
 
     var img = e.target.src;
+
+    createSprite(img, x, y);
+});
+
+function createSprite(img, x, y) {
+
     var sprite = new PIXI.Sprite.fromImage(img);
 
     sprite.position.set(x,y);
     sprite.anchor.set(0.5, 0.5);
     sprite.interactive = true;
 
-    sprite.mousedown = function(e){
-        dragging = sprite;
-        select(sprite);
-        var pos = e.getLocalPosition(sprite);
-        dragOffset.set(
-            pos.x * scale,
-            pos.y * scale
-        );
-    };
+    spriteID++;
+
+    sprite.id = spriteID;
+
+    var node = tree.create_node(null, { text : 'sprite ' + spriteID, data : { sprite : sprite } });
+
+    sprite.treeNode = node;
 
     canvas.addChild(sprite);
 
     dragging = sprite;
     select(sprite);
-});
+
+}
+
+
 
 /**
  * select a sprite
@@ -115,6 +113,8 @@ function select(sprite)
 {
     selected = sprite;
     updateProperties(sprite);
+    tree.deselect_all();
+    tree.select_node(sprite.treeNode);
 }
 
 /**
@@ -152,18 +152,42 @@ $(document).on('keydown', function(e) {
 });
 
 /**
- * handle dragging stuff
+ * drag start
+ */
+$(document).on('mousedown', function(e) {
+
+    if(!dragging) {
+
+        var sprite = selected;
+
+        dragging = sprite;
+
+        var x = e.originalEvent.clientX / scale;
+        var y = e.originalEvent.clientY / scale;
+
+        //sprite.position.set(x,y);
+
+        dragOffset.set(
+            x - sprite.position.x,
+            y - sprite.position.y
+        );
+    }
+
+});
+
+/**
+ * drag
  */
 $(document).on('mousemove', function(e) {
 
     if(dragging) {
 
-        var x = e.originalEvent.clientX;
-        var y = e.originalEvent.clientY;
+        var x = e.originalEvent.clientX / scale;
+        var y = e.originalEvent.clientY / scale;
 
         dragging.position.set(
-            (x - dragOffset.x) / scale,
-            (y - dragOffset.y) / scale
+            x - dragOffset.x,
+            y - dragOffset.y
         );
 
         updateProperties(dragging);
@@ -172,7 +196,7 @@ $(document).on('mousemove', function(e) {
 });
 
 /**
- * end of drag
+ * drag end
  */
 $(document).on('mouseup', function(e) {
 
@@ -216,7 +240,7 @@ $('.panel-properties input').on('change', function(e){
 /**
  * stop keyboard events in the input fields triggering the main handler
  */
-$('.panel-properties input').on('keydown', function(e) {
+$('.panels').on('keydown mousedown', function(e) {
     e.stopPropagation();
 });
 
