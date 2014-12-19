@@ -1,7 +1,7 @@
 {
   "name": "top-down",
   "version": "0.0.0",
-  "description": "top-down\r ========",
+  "description": "top-down",
   "main": "index.js",
   "dependencies": {
     "express": "^4.10.6"
@@ -14,7 +14,7 @@
     "type": "git",
     "url": "git://github.com/beeglebug/top-down.git"
   },
-  "author": "",
+  "author": "Stuart Lee",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/beeglebug/top-down/issues"
