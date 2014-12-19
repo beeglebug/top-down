@@ -156,7 +156,7 @@ Input.prototype.fire = function(listeners, event, arg)
 /**
  * add an event listener for a type of event
  */
-Input.prototype.on = function(event, callback, scope)
+Input.prototype.on = Input.prototype.addEventListener = function(event, callback, scope)
 {
 	if(!this.listeners[event]) {
 		this.listeners[event] = [];
